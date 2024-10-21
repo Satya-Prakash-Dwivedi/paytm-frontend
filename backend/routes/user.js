@@ -5,7 +5,7 @@ const {authMiddleware } = require("./middleware")
 const userRouter = express.Router()
 
 const zod = require("zod")
-const {User} = require("../db")
+const {User, Account} = require("../db")
 const jwt = require("jsonwebtoken")
 const {JWT_SECRET} = require("../config")
 
@@ -41,6 +41,15 @@ userRouter.post("/signup", async(req, res) => {
         lastname: req.body.lastname
     })
     const userId = user._id
+
+    /// create new account
+
+    await Account.create({
+        userId,
+        balance: 1+ Math.random() * 10000
+    })
+
+    /// ------------------
 
     const token = jwt.sign({
         userId
@@ -130,6 +139,8 @@ userRouter.get("/bulk", async(req, res) => {
         }))
     })
 })
+
+// The above code snippet gets the user details from backend using mongodb operator, either the firtname or lastname should match using the or operator with $regex, $regex in MongoDB is like a search tool that helps you find text patterns in your data, making it easier to locate information without needing the exact match.
 
 module.exports = userRouter
 /*
