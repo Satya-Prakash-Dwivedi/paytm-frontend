@@ -1,7 +1,7 @@
 const express = require("express")
-import mongoose from "mongoose"
-import { Account } from "../db"
-import authMiddleware from "./middleware"
+const mongoose  = require ("mongoose")
+const { Account } = require ("../db")
+const {authMiddleware} =  require ("./middleware")
 
 const accountrouter = express.Router()
 

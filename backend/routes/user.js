@@ -11,22 +11,27 @@ const {JWT_SECRET} = require("../config")
 
 const signUpBody = zod.object({
     username : zod.string().email(),
-    firstname : zod.string(),
-    lastname: zod.string(),
+    firstName : zod.string(),
+    lastName: zod.string(),
     password: zod.string()
 })
 
 userRouter.post("/signup", async(req, res) => {
     const {success}  = signUpBody.safeParse(req.body)
     if(!success){
+        console.log(req.body)
         return res.status(411).json({
-            message : "Email already taken/incorrrect inputs"
+            message : "Email already taken/incorrrect inputs",
+            
         })
+        
     }
+
 
     const existingUser = await User.findOne({
         username : req.body.username
     })
+
 
     if(existingUser){
         return res.status(411).json({
@@ -35,10 +40,10 @@ userRouter.post("/signup", async(req, res) => {
     }
 
     const user = await User.create({
-        Username: req.body.username,
+        username: req.body.username,
         password: req.body.password,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
     })
     const userId = user._id
 
